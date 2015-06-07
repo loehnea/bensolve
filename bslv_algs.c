@@ -673,7 +673,7 @@ static void init_P2(soltype *const sol, const vlptype *vlp, lp_hom_type type)
 void phase0(soltype *const sol, const vlptype *vlp, const opttype *opt)
 {
 	init_P2(sol, vlp, HOMOGENEOUS);
-	lp_set_options(opt, PHASE0);
+	lp_set_options(&(opt->lp), PHASE0);
 
 	double tmp1, tmp2;
 	double z[vlp->q - 1];					// to store the vector z (see [1])
@@ -818,7 +818,7 @@ void phase1_primal(soltype *const sol, const vlptype *vlp, const opttype *opt)
 	init_image (&upper_image, vlp->q, 0, 0, &lowerV2upperH);
 
 	init_P2(sol, vlp, HOMOGENEOUS); // assume that appropriate eta is stored in sol->eta
-	lp_set_options(opt, PHASE1_PRIMAL);
+	lp_set_options(&(opt->lp), PHASE1_PRIMAL);
 
 	/* PHASE 1 -- PRIMAL -- PART 1
 	 *
@@ -971,7 +971,7 @@ void phase2_primal(soltype *const sol, const vlptype *vlp, const opttype *opt)
 	}
 
 	init_P2(sol, vlp, INHOMOGENEOUS);
-	lp_set_options(opt, PHASE2_PRIMAL);
+	lp_set_options(&(opt->lp), PHASE2_PRIMAL);
 
 	{
 		upper_image.ideal=0;
@@ -1255,7 +1255,7 @@ void phase1_dual(soltype *const sol, const vlptype *vlp, const opttype *opt)
 	init_image (&lower_image, vlp->q, 0, 0, &upperV2lowerH);
 	
 	init_P1(sol, vlp, HOMOGENEOUS);	// assume that appropriate eta is stored in sol->eta
-	lp_set_options(opt, PHASE1_DUAL);
+	lp_set_options(&(opt->lp), PHASE1_DUAL);
 
 	/* PHASE 1 -- DUAL -- PART 1
 	 *
@@ -1391,7 +1391,7 @@ void phase2_dual(soltype *const sol, const vlptype *vlp, const opttype *opt)
 		init_image (&lower_image, vlp->q, 0, 0, &upperV2lowerH);
 
 	init_P1(sol, vlp, INHOMOGENEOUS); // assume that appropriate eta is stored in sol->eta
-	lp_set_options(opt, PHASE2_DUAL);
+	lp_set_options(&(opt->lp), PHASE2_DUAL);
 
 	/* PHASE 2 -- DUAL -- PART 1
 	 *

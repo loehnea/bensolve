@@ -23,15 +23,13 @@ see <http://www.gnu.org/licenses/>
 
 #include "bslv_main.h"
 #include "bslv_lists.h"
-#include "bslv_vlp.h"
 
 void lp_write (size_t i);
 
 double lp_write_sol(size_t i);
 
 // initialize lp
-void lp_init(const vlptype *vlp);
-
+void lp_init (int, int, int, lp_idx *, lp_idx *, double *);
 /*
  - for nonapprearing coefficients in obj and A, zero is assumed
  - for non-appearing rows, GLPK standard type 'f' is assumed
@@ -44,7 +42,17 @@ void lp_init(const vlptype *vlp);
 */
 
 // set lp options
-void lp_set_options(const opttype *opt, phase_type phase);
+
+typedef enum {PRIMAL_SIMPLEX, DUAL_SIMPLEX, DUAL_PRIMAL_SIMPLEX, LP_METHOD_AUTO} lp_method_type;
+typedef enum {LP_INFEASIBLE, LP_UNBOUNDED, LP_UNEXPECTED_STATUS, LP_UNDEFINED_STATUS, LP_OPTIMAL} lp_status_type;
+typedef enum {HOMOGENEOUS, INHOMOGENEOUS} lp_hom_type;
+
+struct lp_opt {
+  lp_method_type method_phase0,method_phase1,method_phase2;
+  int message_level;
+};
+
+void lp_set_options(const struct lp_opt *opt, phase_type phase);
 
 // create a copy lp[dest]] of lp[src]
 void lp_copy(size_t dest, size_t src);

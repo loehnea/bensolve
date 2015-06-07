@@ -129,9 +129,9 @@ int main(int argc, char **argv)
 				strcpy(opt->filename, optarg);
 				break;
 			case 'k':
-				if (strcmp(optarg,"primal_simplex") == 0) opt->lp_method_phase0 = PRIMAL_SIMPLEX;
-				else if (strcmp(optarg,"dual_simplex") == 0) opt->lp_method_phase0 = DUAL_SIMPLEX;
-				else if (strcmp(optarg,"dual_primal_simplex") == 0) opt->lp_method_phase0 = DUAL_PRIMAL_SIMPLEX;
+				if (strcmp(optarg,"primal_simplex") == 0) opt->lp.method_phase0 = PRIMAL_SIMPLEX;
+				else if (strcmp(optarg,"dual_simplex") == 0) opt->lp.method_phase0 = DUAL_SIMPLEX;
+				else if (strcmp(optarg,"dual_primal_simplex") == 0) opt->lp.method_phase0 = DUAL_PRIMAL_SIMPLEX;
 				else
 				{
 					printf("option --lp_method_phase0 (-k): invalid argument\n");
@@ -139,10 +139,10 @@ int main(int argc, char **argv)
 				}
 				break;
 			case 'L':
-				if (strcmp(optarg,"primal_simplex") == 0) opt->lp_method_phase1 = PRIMAL_SIMPLEX;
-				else if (strcmp(optarg,"dual_simplex") == 0) opt->lp_method_phase1 = DUAL_SIMPLEX;
-				else if (strcmp(optarg,"dual_primal_simplex") == 0) opt->lp_method_phase1 = DUAL_PRIMAL_SIMPLEX;
-				else if (strcmp(optarg,"auto") == 0) opt->lp_method_phase1 = LP_METHOD_AUTO;
+				if (strcmp(optarg,"primal_simplex") == 0) opt->lp.method_phase1 = PRIMAL_SIMPLEX;
+				else if (strcmp(optarg,"dual_simplex") == 0) opt->lp.method_phase1 = DUAL_SIMPLEX;
+				else if (strcmp(optarg,"dual_primal_simplex") == 0) opt->lp.method_phase1 = DUAL_PRIMAL_SIMPLEX;
+				else if (strcmp(optarg,"auto") == 0) opt->lp.method_phase1 = LP_METHOD_AUTO;
 				else
 				{
 					printf("option --lp_method_phase1 (-L): invalid argument\n");
@@ -150,10 +150,10 @@ int main(int argc, char **argv)
 				}
 				break;
 			case 'l':
-				if (strcmp(optarg,"primal_simplex") == 0) opt->lp_method_phase2 = PRIMAL_SIMPLEX;
-				else if (strcmp(optarg,"dual_simplex") == 0) opt->lp_method_phase2 = DUAL_SIMPLEX;
-				else if (strcmp(optarg,"dual_primal_simplex") == 0) opt->lp_method_phase2 = DUAL_PRIMAL_SIMPLEX;
-				else if (strcmp(optarg,"auto") == 0) opt->lp_method_phase2 = LP_METHOD_AUTO;
+				if (strcmp(optarg,"primal_simplex") == 0) opt->lp.method_phase2 = PRIMAL_SIMPLEX;
+				else if (strcmp(optarg,"dual_simplex") == 0) opt->lp.method_phase2 = DUAL_SIMPLEX;
+				else if (strcmp(optarg,"dual_primal_simplex") == 0) opt->lp.method_phase2 = DUAL_PRIMAL_SIMPLEX;
+				else if (strcmp(optarg,"auto") == 0) opt->lp.method_phase2 = LP_METHOD_AUTO;
 				else
 				{
 					printf("option --lp_method_phase2 (-l): invalid argument\n");
@@ -161,8 +161,8 @@ int main(int argc, char **argv)
 				}
 				break;
 			case 'M':
-				opt->lp_message_level = string_to_int(optarg, "option --lp_message_level (-M): invalid argument\n");
-				if (opt->lp_message_level>3 || opt->lp_message_level<0)
+				opt->lp.message_level = string_to_int(optarg, "option --lp_message_level (-M): invalid argument\n");
+				if (opt->lp.message_level>3 || opt->lp.message_level<0)
 				{
  					printf("option --lp_message_level (-M): invalid argument\n");
  					exit(1);
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	lp_init(vlp);
+	lp_init(vlp->m+vlp->q, vlp->n+vlp->q, vlp->A_ext->size, vlp->A_ext->idx1, vlp->A_ext->idx2, vlp->A_ext->data);
 	
 	if (opt->message_level == 1)
 		 printf("running ... \n");
@@ -374,11 +374,11 @@ int main(int argc, char **argv)
 		fprintf(log_fp, "  bounded:            %s\n", opt->bounded ? "yes (run phase 2 only)" : "no (run phases 0 to 2)");
 		fprintf(log_fp, "  solution:           %s\n", opt->solution == PRE_IMG_OFF ? "off (no solution output)":"on (solutions (pre-image) written to files)"); 
 		fprintf(log_fp, "  format:             %s\n", opt->format == FORMAT_AUTO ? "auto" : opt->format == FORMAT_LONG ? "long": "short");
-		fprintf(log_fp, "  lp_method_phase0:   %s\n", opt->lp_method_phase0 == PRIMAL_SIMPLEX ? "primal_simplex" : opt->lp_method_phase0 == DUAL_SIMPLEX ? "dual_simplex" : "dual_primal_simplex (dual simplex, if not succesful, primal simplex)");
-		fprintf(log_fp, "  lp_method_phase1:   %s\n", opt->lp_method_phase1 == PRIMAL_SIMPLEX ? "primal_simplex" : opt->lp_method_phase1 == DUAL_SIMPLEX ? "dual_simplex" : opt->lp_method_phase1 == DUAL_PRIMAL_SIMPLEX ? "dual_primal_simplex (dual simplex, if not succesful, primal simplex)" : "auto");
-		fprintf(log_fp, "  lp_method_phase2:   %s\n", opt->lp_method_phase2 == PRIMAL_SIMPLEX ? "primal_simplex" : opt->lp_method_phase2 == DUAL_SIMPLEX ? "dual_simplex" : opt->lp_method_phase2 == DUAL_PRIMAL_SIMPLEX ? "dual_primal_simplex (dual simplex, if not succesful, primal simplex)" : "auto");
+		fprintf(log_fp, "  lp_method_phase0:   %s\n", opt->lp.method_phase0 == PRIMAL_SIMPLEX ? "primal_simplex" : opt->lp.method_phase0 == DUAL_SIMPLEX ? "dual_simplex" : "dual_primal_simplex (dual simplex, if not succesful, primal simplex)");
+		fprintf(log_fp, "  lp_method_phase1:   %s\n", opt->lp.method_phase1 == PRIMAL_SIMPLEX ? "primal_simplex" : opt->lp.method_phase1 == DUAL_SIMPLEX ? "dual_simplex" : opt->lp.method_phase1 == DUAL_PRIMAL_SIMPLEX ? "dual_primal_simplex (dual simplex, if not succesful, primal simplex)" : "auto");
+		fprintf(log_fp, "  lp_method_phase2:   %s\n", opt->lp.method_phase2 == PRIMAL_SIMPLEX ? "primal_simplex" : opt->lp.method_phase2 == DUAL_SIMPLEX ? "dual_simplex" : opt->lp.method_phase2 == DUAL_PRIMAL_SIMPLEX ? "dual_primal_simplex (dual simplex, if not succesful, primal simplex)" : "auto");
 		fprintf(log_fp, "  message_level:      %d\n", opt->message_level);
-		fprintf(log_fp, "  lp_message_level:   %d\n", opt->lp_message_level);
+		fprintf(log_fp, "  lp_message_level:   %d\n", opt->lp.message_level);
 		fprintf(log_fp, "  alg_phase1:         %s\n", opt->alg_phase1 == PRIMAL_BENSON ? "primal" : "dual");
 		fprintf(log_fp, "  alg_phase2:         %s\n", opt->alg_phase2 == PRIMAL_BENSON ? "primal" : "dual");
 		fprintf(log_fp, "  eps_benson_phase1:  %g\n", opt->eps_benson_phase1);

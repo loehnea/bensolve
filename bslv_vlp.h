@@ -25,6 +25,7 @@ see <http://www.gnu.org/licenses/>
 
 #include "bslv_main.h"		/* lp_idx */
 #include "bslv_lists.h"
+#include "bslv_lp.h"
 
 
 #define PROBLEM_DESIGNATOR "vlp"
@@ -92,17 +93,14 @@ typedef struct
 	char filename[255+1];
 	pre_img_type solution;					// PRE_IMG_OFF - PRE_IMG_ON
 	format_type format;						// SHORT - LONG - AUTO
-	lp_method_type lp_method_phase0;		// PRIMAL_SIMPLEX - DUAL_SIMPLEX - DUAL_PRIMAL_SIMPLEX
-	lp_method_type lp_method_phase1;		// PRIMAL_SIMPLEX - DUAL_SIMPLEX - DUAL_PRIMAL_SIMPLEX - AUTO
-	lp_method_type lp_method_phase2;		// PRIMAL_SIMPLEX - DUAL_SIMPLEX - DUAL_PRIMAL_SIMPLEX - AUTO
 	int message_level;						// 0 - 1 - 2 - 3
-	int lp_message_level;					// 0 - 1 - 2 - 3
 	alg_type alg_phase1;					// PRIMAL - DUAL
 	alg_type alg_phase2;					// PRIMAL - DUAL
 	double eps_phase0;						// Epsilon used in Phase 0
 	double eps_phase1;						// Epsilon used in Phase 1
 	double eps_benson_phase1;				// Epsilon of Benson algorithm in Phase 1
 	double eps_benson_phase2;				// Epsilon of Benson algorithm in Phase 2
+    struct lp_opt lp;
 } opttype;
 
 int vlp_init(char const *filename, vlptype *vlp, const opttype *opt);

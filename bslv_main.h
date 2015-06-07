@@ -97,12 +97,9 @@ typedef int lp_idx;
 #define INC_D_STR "_inc_d"
 
 enum _alg_type {PRIMAL_BENSON, DUAL_BENSON};
-enum _lp_method_type {PRIMAL_SIMPLEX, DUAL_SIMPLEX, DUAL_PRIMAL_SIMPLEX, LP_METHOD_AUTO};
-enum _lp_hom_type {HOMOGENEOUS, INHOMOGENEOUS};
 enum _cone_out_type {CONE_OUT_OFF, CONE_OUT_ON};
 enum _phase_type {PHASE0, PHASE1_PRIMAL, PHASE1_DUAL, PHASE2_PRIMAL, PHASE2_DUAL};
 enum _format_type {FORMAT_SHORT, FORMAT_LONG, FORMAT_AUTO};
-enum _lp_status_type {LP_INFEASIBLE, LP_UNBOUNDED, LP_UNEXPECTED_STATUS, LP_UNDEFINED_STATUS, LP_OPTIMAL};
 enum _sol_status_type {VLP_NOSTATUS, VLP_INFEASIBLE, VLP_UNBOUNDED, VLP_NOVERTEX, VLP_OPTIMAL, VLP_INPUTERROR};
 enum _cone_gen_type {CONE, DUALCONE, DEFAULT};
 enum _c_dir_type{C_DIR_POS, C_DIR_NEG};
@@ -110,12 +107,9 @@ enum _swap_type{SWAP, NO_SWAP};
 enum _pre_img_type{PRE_IMG_OFF, PRE_IMG_ON}; 
 
 typedef enum _alg_type alg_type;
-typedef enum _lp_method_type lp_method_type;
-typedef enum _lp_hom_type lp_hom_type;
 typedef enum _cone_out_type cone_out_type;
 typedef enum _phase_type phase_type;
 typedef enum _format_type format_type;
-typedef enum _lp_status_type lp_status_type;
 typedef enum _sol_status_type sol_status_type;
 typedef enum _cone_gen_type cone_gen_type;
 typedef enum _c_dir_type c_dir_type;

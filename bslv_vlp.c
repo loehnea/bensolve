@@ -880,11 +880,11 @@ void set_default_opt(opttype *opt)
 	opt->filename[0]='\0';
 	opt->solution = PRE_IMG_OFF;
 	opt->format = FORMAT_AUTO;
-	opt->lp_method_phase0 = PRIMAL_SIMPLEX;
-	opt->lp_method_phase1 = LP_METHOD_AUTO;
-	opt->lp_method_phase2 = LP_METHOD_AUTO;
+	opt->lp.method_phase0 = PRIMAL_SIMPLEX;
+	opt->lp.method_phase1 = LP_METHOD_AUTO;
+	opt->lp.method_phase2 = LP_METHOD_AUTO;
 	opt->message_level = DEFAULT_MESSAGE_LEVEL;
-	opt->lp_message_level = DEFAULT_LP_MESSAGE_LEVEL;
+	opt->lp.message_level = DEFAULT_LP_MESSAGE_LEVEL;
 	opt->alg_phase1 = PRIMAL_BENSON;
 	opt->alg_phase2 = PRIMAL_BENSON;
 	opt->eps_phase0 = DEFAULT_EPS_PHASE0;

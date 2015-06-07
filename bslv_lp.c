@@ -50,35 +50,25 @@ void lp_write (size_t i)
 {
 	glp_write_prob (lp[i],0, "lp_solve_test_write");
 	glp_write_sol (lp[i], "lp_solve_test_sol_write");
-}
+};
 
 double lp_write_sol(size_t i)
 {
 	return glp_write_sol(lp[i],"tmp.sol");
 }
 
-void lp_init(const vlptype *vlp) 
+void lp_init (int row_cnt, int col_cnt, int nnz, int *row_idx, int *col_idx, double *data)
 {
 	glp_init_smcp(&parm);
 	lp[0] = glp_create_prob();
-	glp_add_rows (lp[0], vlp->m + vlp->q);
-	glp_add_cols (lp[0], vlp->n + vlp->q);
+	glp_add_rows (*lp, row_cnt);
+	glp_add_cols (*lp, col_cnt);
+	glp_load_matrix (*lp, nnz, row_idx-1, col_idx-1, data-1);
 
-	//int f = glp_check_dup(glp_get_num_rows(lp), glp_get_num_cols(lp), (int) A->size, (int*) (A->idx1 - 1), (int*) (A->idx2 - 1));
-	int f = 0;
-	if (f == 0)
-		glp_load_matrix(lp[0], vlp->A_ext->size, (vlp->A_ext->idx1 - 1), (vlp->A_ext->idx2) - 1, vlp->A_ext->data - 1);	
-	else if (f > 0)
-	{
-		printf("Error: element A[%d,%d] in line %d is duplicate", vlp->A_ext->idx1[f], vlp->A_ext->idx2[f], f);
-		exit(1);
-	}
-	else
-	{
-		printf("Error: indices of A[%d,%d] in line %d are out of range", vlp->A_ext->idx1[-f], vlp->A_ext->idx2[-f], -f);
-		exit(1);
-	}
+
+	return;
 }
+
 
 void lp_update_extra_coeffs(lp_idx n_rows, lp_idx n_cols) 
 {
@@ -160,67 +150,70 @@ void lp_set_obj_coeffs (size_t i, const list1d *obj)
 		glp_set_obj_coef(lp[i], obj->idx[k], obj->data[k]);
 }
 
-void lp_set_options(const opttype *opt, phase_type phase)
+void lp_set_options(const struct lp_opt *opt, phase_type phase)
 {
 	{
 		alg_type flag;
 		lp_method_type method;
-		if (phase == PHASE0)
-		{
-			method = opt->lp_method_phase0;
-			flag = PRIMAL_BENSON;
+		switch (phase) {
+		case PHASE0:
+		  method=opt->method_phase0;
+		  break;
+		case PHASE1_PRIMAL:
+		  method=opt->method_phase1;
+		  parm.meth=GLP_DUAL;
+		  break;
+		case PHASE1_DUAL:
+		  method=opt->method_phase1;
+		  parm.meth=GLP_PRIMAL;
+		  break;		  
+		case PHASE2_PRIMAL:
+		  method=opt->method_phase2;
+		  parm.meth=GLP_DUAL;
+		  break;		  
+		case PHASE2_DUAL:
+		  method=opt->method_phase2;
+		  parm.meth=GLP_PRIMAL;
+		  break;		  
+		default:
+		  assert (0);
 		}
-		else if (phase == PHASE1_PRIMAL)
-		{
-			method = opt->lp_method_phase1;
-			flag = PRIMAL_BENSON;
+
+		switch (method) {
+		case LP_METHOD_AUTO:
+		  break;
+		case PRIMAL_SIMPLEX:
+		  parm.meth=GLP_PRIMAL;
+		  break;
+		case DUAL_SIMPLEX:
+		  parm.meth=GLP_DUAL;
+		  break;
+		case DUAL_PRIMAL_SIMPLEX:
+		  parm.meth=GLP_DUALP;
+		  break;
+		default:
+		  assert (0);
 		}
-		else if(phase == PHASE1_DUAL)
-		{
-			method = opt->lp_method_phase1;
-			flag = DUAL_BENSON;
-		}
-		else if (phase == PHASE2_PRIMAL)
-		{
-			method = opt->lp_method_phase2;
-			flag = PRIMAL_BENSON;
-		}
-		else
-		{
-			assert(phase == PHASE2_DUAL);
-			method = opt->lp_method_phase2; 
-			flag = DUAL_BENSON;
-		}
-		if (method == PRIMAL_SIMPLEX)
-			parm.meth = GLP_PRIMAL;
-		else if (method == DUAL_SIMPLEX)
-			parm.meth = GLP_DUAL;
-		else if (method == DUAL_PRIMAL_SIMPLEX)
-			parm.meth = GLP_DUALP;
-		else
-		{
-			assert(method == LP_METHOD_AUTO);
-			if (flag == PRIMAL_BENSON)
-				parm.meth = GLP_DUAL;
-			else
-			{
-				assert(flag == DUAL_BENSON);
-				parm.meth = GLP_PRIMAL;
-			}
-		}
+
 	}
-	
-	if (opt->lp_message_level == 0)
-		parm.msg_lev = GLP_MSG_OFF;
-	else if (opt->lp_message_level == 1)
-		parm.msg_lev = GLP_MSG_ERR;
-	else if (opt->lp_message_level == 2)
-		parm.msg_lev = GLP_MSG_ON;
-	else
-	{
-		assert(opt->lp_message_level == 3);
-		parm.msg_lev = GLP_MSG_ALL;	
-	}	
+
+		switch (opt->message_level) {
+		case 0:
+		  parm.msg_lev=GLP_MSG_OFF;
+		  break;
+		case 1:
+		  parm.msg_lev=GLP_MSG_ERR;
+		  break;
+		case 2:
+		  parm.msg_lev=GLP_MSG_ON;
+		  break;
+		case 3:
+		  parm.msg_lev=GLP_MSG_ALL;
+		  break;
+		default:
+		  assert (0);
+		}
+		
 }
 
 lp_status_type lp_solve(size_t i)
