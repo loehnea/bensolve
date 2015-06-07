@@ -22,15 +22,14 @@ see <http://www.gnu.org/licenses/>
 #include <getopt.h>
 #include <string.h>
 #include <assert.h>
-//#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
 
+#include "bslv_main.h"
 #include "bslv_vlp.h"
 #include "bslv_lp.h"
-#include "bslv_lists.h"
 #include "bslv_algs.h"
+
 
 struct timeval t_start,t_end;
 
