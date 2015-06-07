@@ -18,6 +18,7 @@ along with this program (see the reference manual). If not,
 see <http://www.gnu.org/licenses/>
 */
 
+#include <setjmp.h>
 #include <assert.h> // assert,
 #include <stdlib.h> // strtod,
 #include <ctype.h>  // isspace, iscntrl, isdigit,
@@ -25,12 +26,11 @@ see <http://www.gnu.org/licenses/>
 #include <float.h>  // DBL_MIN, DBL_MAX
 #include <string.h> // strcmp
 #include <stdio.h>  // fopen, fgetc, ferror, fclose
-#include <stdlib.h>
-#include <float.h>
 #include <math.h>
 
 #include "bslv_vlp.h"
-#include "bslv_algs.h"
+#include "bslv_algs.h"		/* cone_vertenum */
+
 
 static void error(csatype *csa, char const *msg)
 {

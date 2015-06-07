@@ -18,13 +18,14 @@ along with this program (see the reference manual). If not,
 see <http://www.gnu.org/licenses/>
 */
 
-#include <string.h> // memcpy
 #include <limits.h> // INT_MIN, INT_MAX
 #include <assert.h> // assert
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "bslv_lists.h"
+
 
 void string_fprint(const char *filename, const char *str)
 {

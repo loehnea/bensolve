@@ -19,11 +19,12 @@ see <http://www.gnu.org/licenses/>
 */
 
 #include <glpk.h>
-#include <time.h>
 #include <assert.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
+
 #include "bslv_lp.h"
+
 
 double lp_time[1] = { 0 };
 int lp_num[1] = { 0 };

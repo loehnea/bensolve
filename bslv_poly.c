@@ -19,10 +19,11 @@ see <http://www.gnu.org/licenses/>
 */
 
 #include <stdlib.h>
-#include <sys/ioctl.h>
+#include <stdio.h>
 #include <math.h>
-#include <float.h>
+
 #include "bslv_poly.h"
+
 
 size_t fnc_dim;
 

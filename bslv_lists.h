@@ -22,7 +22,6 @@ see <http://www.gnu.org/licenses/>
 #define BSLV_LISTS_H
 
 #include "bslv_main.h"
-#include "bslv_poly.h"
 
 typedef struct
 {

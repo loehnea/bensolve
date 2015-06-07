@@ -20,14 +20,19 @@ see <http://www.gnu.org/licenses/>
 
 #include <sys/time.h>	// gettimeofday()
 #include <assert.h>		// assert
-#include <unistd.h>		// usleep
 #include <string.h>
 #include <float.h>
-#include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
+#include <math.h>
 
+#include "bslv_lists.h"
+#include "bslv_poly.h"
 #include "bslv_lp.h"
-#include "bslv_main.h"
+#include "bslv_vlp.h"
+#include "bslv_algs.h"
+
 
 extern struct timeval t_end;
 

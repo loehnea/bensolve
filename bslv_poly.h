@@ -21,9 +21,8 @@ see <http://www.gnu.org/licenses/>
 #ifndef BSLV_POLY_H
 #define BSLV_POLY_H
 
-
+#include <stddef.h>
 #include <limits.h>
-#include <stdio.h>
 
 
 #ifndef ALLOCFCTR

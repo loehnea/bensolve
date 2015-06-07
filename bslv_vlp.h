@@ -21,10 +21,11 @@ see <http://www.gnu.org/licenses/>
 #ifndef BSLV_VLP_H
 #define BSLV_VLP_H
 
-#include <setjmp.h> // longjmp, setjmp
+#include <setjmp.h> // jmp_buf
 
-#include "bslv_main.h"
-#include "bslv_lists.h" 
+#include "bslv_main.h"		/* lp_idx */
+#include "bslv_lists.h"
+
 
 #define PROBLEM_DESIGNATOR "vlp"
 #define STOP_AT_WARNING 0	// set 1 to compile with stop at warning
