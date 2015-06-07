@@ -14,7 +14,7 @@ bensolve: $(OBJS)
 bslv_main.o: bslv_main.h bslv_vlp.h bslv_lp.h bslv_algs.h
 bslv_lists.o: bslv_main.h bslv_lists.h
 bslv_vlp.o: bslv_main.h bslv_vlp.h bslv_algs.h bslv_lists.h
-bslv_lp.o: bslv_main.h bslv_lists.h bslv_vlp.h bslv_lp.h
+bslv_lp.o: bslv_main.h bslv_lists.h bslv_lp.h
 bslv_algs.o: bslv_main.h bslv_lists.h bslv_poly.h bslv_vlp.h bslv_lp.h bslv_algs.h
 bslv_poly.o: bslv_poly.h
 
